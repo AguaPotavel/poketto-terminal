@@ -5,13 +5,14 @@
   import Seed from "./_components/seed.svelte";
   import type { Keypair } from "@mysten/sui/cryptography";
   import { SendHorizontal } from "lucide-svelte";
+  import { goto } from "$app/navigation";
 
   let wallets: any = [];
   let fetchingWallets: boolean = false;
   let mnemonic: string = "";
 
   let newWallet = async () => {
-    mnemonic = await n();
+    mnemonic = n();
   };
 
   function parseWallet(wallet: string): string {
@@ -42,6 +43,8 @@
         <button class="btn btn-primary" onclick={newWallet}
           >Create wallet</button
         >
+        <a href="/dashboard" class="btn btn-secondary mt-2">Ir para Dashboard</a
+        >
       </div>
     </div>
   {:else if mnemonic !== ""}
@@ -54,7 +57,7 @@
     >
       <h1 class="text-2xl font-bold">Your wallets</h1>
       {#each wallets as wallet}
-        <button class="btn btn-primary"
+        <button onclick={() => goto("/dashboard")} class="btn btn-primary"
           >{parseWallet(normalizeWallet(wallet).getPublicKey().toSuiAddress())}
 
           <SendHorizontal class="w-6 h-6" />
@@ -63,3 +66,4 @@
     </div>
   {/if}
 </main>
+
